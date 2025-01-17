@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnLogNumber;
     private EditText editText;
     private TextView text;
+    private Button btnToast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,19 +52,25 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String inputText = charSequence.toString();
-                text.setText(inputText);
-
-                if (!inputText.isEmpty()) {
-                    String reversedText = new StringBuilder(inputText).reverse().toString().toUpperCase();
-                    Toast.makeText(MainActivity.this, reversedText, Toast.LENGTH_SHORT).show();
-                }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                text.setText(s.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        btnToast = findViewById(R.id.btnToast);
+        btnToast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String inputText = text.getText().toString();
+                if (!inputText.isEmpty()) {
+                    String reversedText = reverse(inputText);
+                    Toast.makeText(MainActivity.this, reversedText, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -92,5 +99,14 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("ArrayList","Dánh sách số chẵn: " + evenNumbers);
         Log.d("ArrayList","Dánh sách số lẻ: " + oddNumbers);
+    }
+
+    private String reverse(String text) {
+        String[] words = text.split(" ");
+        StringBuilder reversed = new StringBuilder();
+        for (int i=words.length-1; i>=0; i--) {
+            reversed.append(words[i].toUpperCase()).append(" ");
+        }
+        return reversed.toString().trim();
     }
 }
